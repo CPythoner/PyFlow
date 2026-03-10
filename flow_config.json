@@ -1,0 +1,382 @@
+{
+  "current_flow_id": "ybb-build",
+  "flows": [
+    {
+      "nodes": [
+        {
+          "id": "get_reviews",
+          "name": "获取评论",
+          "icon": "🌐",
+          "description": "从 API 获取用户评论数据",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": -220.0,
+            "y": -54.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "cmd",
+          "commands": [
+            {
+              "name": "检查网络",
+              "command": "echo '检查网络连接...'"
+            },
+            {
+              "name": "获取评论",
+              "command": "echo 'POST http://qdrant:6333/reviews'"
+            }
+          ]
+        },
+        {
+          "id": "kmeans",
+          "name": "K-means 聚类",
+          "icon": "🧮",
+          "description": "应用 K-means 算法进行聚类分析",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": 50.0,
+            "y": 280.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "cmd",
+          "commands": [
+            {
+              "name": "加载数据",
+              "command": "echo '加载评论数据...'"
+            },
+            {
+              "name": "执行聚类",
+              "command": "echo '运行 K-means 算法...'"
+            }
+          ]
+        },
+        {
+          "id": "clusters_list",
+          "name": "转换为列表",
+          "icon": "📋",
+          "description": "将聚类结果转换为列表格式",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": -401.0,
+            "y": 528.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "cmd",
+          "commands": [
+            {
+              "name": "格式化输出",
+              "command": "echo '转换聚类结果为列表...'"
+            }
+          ]
+        },
+        {
+          "id": "agent",
+          "name": "客户洞察代理",
+          "icon": "🤖",
+          "description": "使用 AI 代理分析客户洞察",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": 50.0,
+            "y": 740.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "cmd",
+          "commands": [
+            {
+              "name": "加载模型",
+              "command": "echo '加载 OpenAI 模型...'"
+            },
+            {
+              "name": "分析数据",
+              "command": "echo '分析聚类数据生成洞察...'"
+            }
+          ]
+        },
+        {
+          "id": "gsheets",
+          "name": "写入表格",
+          "icon": "📊",
+          "description": "将洞察结果写入 Google Sheets",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": 50.0,
+            "y": 970.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "cmd",
+          "commands": [
+            {
+              "name": "连接表格",
+              "command": "echo '连接到 Google Sheets...'"
+            },
+            {
+              "name": "追加数据",
+              "command": "echo '追加洞察数据到表格...'"
+            }
+          ]
+        },
+        {
+          "id": "ma",
+          "name": "编译 MA",
+          "icon": "📦",
+          "description": "",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": -436.0,
+            "y": -226.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "cmd",
+          "commands": []
+        },
+        {
+          "id": "abc",
+          "name": "abc",
+          "icon": "📦",
+          "description": "",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": -93.0,
+            "y": -366.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "cmd",
+          "commands": []
+        },
+        {
+          "id": "1111",
+          "name": "1111",
+          "icon": "📦",
+          "description": "",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": 143.0,
+            "y": -106.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "cmd",
+          "commands": []
+        }
+      ],
+      "connections": [
+        {
+          "from": "kmeans",
+          "to": "clusters_list"
+        },
+        {
+          "from": "clusters_list",
+          "to": "agent"
+        },
+        {
+          "from": "agent",
+          "to": "gsheets"
+        },
+        {
+          "from": "ma",
+          "to": "abc"
+        },
+        {
+          "from": "abc",
+          "to": "get_reviews"
+        },
+        {
+          "from": "get_reviews",
+          "to": "1111"
+        },
+        {
+          "from": "1111",
+          "to": "kmeans"
+        }
+      ],
+      "id": "default",
+      "name": "默认流程"
+    },
+    {
+      "nodes": [
+        {
+          "id": "powershell",
+          "name": "执行 PowerShell 脚本",
+          "icon": "⚙️",
+          "description": "执行本地 PowerShell 脚本文件。",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": -499.0,
+            "y": -281.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "powershell",
+          "commands": [
+            {
+              "name": "执行脚本",
+              "command": "if (Test-Path -LiteralPath \"output\"){Remove-Item -LiteralPath \"output\" -Recurse -Force}"
+            }
+          ]
+        },
+        {
+          "id": "powershell_copy",
+          "name": "执行 PowerShell 脚本 副本",
+          "icon": "⚙️",
+          "description": "执行本地 PowerShell 脚本文件。",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": 326.0,
+            "y": 601.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "powershell",
+          "commands": [
+            {
+              "name": "执行脚本",
+              "command": "if (Test-Path -LiteralPath \"output\"){Remove-Item -LiteralPath \"output\" -Recurse -Force}"
+            }
+          ]
+        },
+        {
+          "id": "powershell_copy_copy",
+          "name": "执行 PowerShell 脚本 副本 副本",
+          "icon": "⚙️",
+          "description": "执行本地 PowerShell 脚本文件。",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": 583.0,
+            "y": 433.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "powershell",
+          "commands": [
+            {
+              "name": "执行脚本",
+              "command": "if (Test-Path -LiteralPath \"output\"){Remove-Item -LiteralPath \"output\" -Recurse -Force}"
+            }
+          ]
+        },
+        {
+          "id": "powershell_copy_copy_copy",
+          "name": "执行 PowerShell 脚本 副本 副本 副本",
+          "icon": "⚙️",
+          "description": "执行本地 PowerShell 脚本文件。",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": 560.0,
+            "y": 168.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "powershell",
+          "commands": [
+            {
+              "name": "执行脚本",
+              "command": "if (Test-Path -LiteralPath \"output\"){Remove-Item -LiteralPath \"output\" -Recurse -Force}"
+            }
+          ]
+        },
+        {
+          "id": "powershell_copy_copy_copy_copy",
+          "name": "执行 PowerShell 脚本 副本 副本 副本 副本",
+          "icon": "⚙️",
+          "description": "执行本地 PowerShell 脚本文件。",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": 148.0,
+            "y": 408.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "powershell",
+          "commands": [
+            {
+              "name": "执行脚本",
+              "command": "if (Test-Path -LiteralPath \"output\"){Remove-Item -LiteralPath \"output\" -Recurse -Force}"
+            }
+          ]
+        },
+        {
+          "id": "powershell_1",
+          "name": "执行 PowerShell",
+          "icon": "⚙️",
+          "description": "执行本地 PowerShell 脚本文件。",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": 99.0,
+            "y": -318.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "powershell",
+          "commands": [
+            {
+              "name": "执行脚本",
+              "command": "powershell -ExecutionPolicy Bypass -File .\\\\script.ps1"
+            },
+            {
+              "name": "执行脚本2",
+              "command": "powershell -ExecutionPolicy Bypass -File .\\\\script2.ps1"
+            }
+          ]
+        },
+        {
+          "id": "powershell_1_copy",
+          "name": "执行 PowerShell  副本",
+          "icon": "⚙️",
+          "description": "执行本地 PowerShell 脚本文件。",
+          "working_dir": null,
+          "continue_on_error": false,
+          "position": {
+            "x": 92.0,
+            "y": 27.0
+          },
+          "skip_in_flow": false,
+          "terminal_type": "powershell",
+          "commands": [
+            {
+              "name": "执行脚本",
+              "command": "powershell -ExecutionPolicy Bypass -File .\\\\script.ps1"
+            },
+            {
+              "name": "执行脚本2",
+              "command": "powershell -ExecutionPolicy Bypass -File .\\\\script2.ps1"
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "powershell",
+          "to": "powershell_1"
+        },
+        {
+          "from": "powershell",
+          "to": "powershell_1_copy"
+        },
+        {
+          "from": "powershell_1_copy",
+          "to": "powershell_copy_copy_copy"
+        },
+        {
+          "from": "powershell_copy_copy_copy",
+          "to": "powershell_copy_copy_copy_copy"
+        },
+        {
+          "from": "powershell_copy_copy_copy_copy",
+          "to": "powershell_copy_copy"
+        },
+        {
+          "from": "powershell_copy_copy",
+          "to": "powershell_copy"
+        }
+      ],
+      "id": "ybb-build",
+      "name": "ybb-build"
+    }
+  ]
+}
