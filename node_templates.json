@@ -1,0 +1,104 @@
+{
+  "templates": [
+    {
+      "id": "delete_directory",
+      "name": "删除目录",
+      "default_name": "删除目录",
+      "icon": "🗑️",
+      "description": "删除指定目录及其全部内容。执行前请确认路径无误。",
+      "working_dir": "",
+      "terminal_type": "powershell",
+      "continue_on_error": false,
+      "commands": [
+        {
+          "name": "删除目录",
+          "command": "Remove-Item -LiteralPath \".\\\\target-folder\" -Recurse -Force"
+        }
+      ]
+    },
+    {
+      "id": "delete_file",
+      "name": "删除文件",
+      "default_name": "删除文件",
+      "icon": "❌",
+      "description": "删除单个文件，适合清理临时文件或旧产物。",
+      "working_dir": "",
+      "terminal_type": "powershell",
+      "continue_on_error": false,
+      "commands": [
+        {
+          "name": "删除文件",
+          "command": "Remove-Item -LiteralPath \".\\\\target-file.txt\" -Force"
+        }
+      ]
+    },
+    {
+      "id": "create_directory",
+      "name": "创建目录",
+      "default_name": "创建输出目录",
+      "icon": "📁",
+      "description": "确保目录存在，不存在时自动创建。",
+      "working_dir": "",
+      "terminal_type": "powershell",
+      "continue_on_error": false,
+      "commands": [
+        {
+          "name": "创建目录",
+          "command": "New-Item -ItemType Directory -Path \".\\\\output\" -Force"
+        }
+      ]
+    },
+    {
+      "id": "copy_file",
+      "name": "复制文件",
+      "default_name": "复制产物文件",
+      "icon": "📋",
+      "description": "将文件复制到目标位置，常用于备份或归档。",
+      "working_dir": "",
+      "terminal_type": "powershell",
+      "continue_on_error": false,
+      "commands": [
+        {
+          "name": "复制文件",
+          "command": "Copy-Item -LiteralPath \".\\\\source.txt\" -Destination \".\\\\backup\\\\source.txt\" -Force"
+        }
+      ]
+    },
+    {
+      "id": "move_file",
+      "name": "移动文件",
+      "default_name": "移动产物文件",
+      "icon": "🚚",
+      "description": "把文件移动到新位置，适合整理构建输出。",
+      "working_dir": "",
+      "terminal_type": "powershell",
+      "continue_on_error": false,
+      "commands": [
+        {
+          "name": "移动文件",
+          "command": "Move-Item -LiteralPath \".\\\\source.txt\" -Destination \".\\\\archive\\\\source.txt\" -Force"
+        }
+      ]
+    },
+    {
+      "id": "run_powershell_script",
+      "name": "执行 PowerShell 脚本",
+      "default_name": "执行 PowerShell 脚本",
+      "icon": "⚙️",
+      "description": "执行本地 PowerShell 脚本文件。",
+      "working_dir": "",
+      "terminal_type": "powershell",
+      "continue_on_error": false,
+      "commands": [
+        {
+          "name": "执行脚本",
+          "command": "powershell -ExecutionPolicy Bypass -File .\\\\script.ps1"
+        },
+        {
+          "name": "执行脚本2",
+          "command": "powershell -ExecutionPolicy Bypass -File .\\\\script2.ps1"
+        }
+      ]
+    }
+  ]
+}
