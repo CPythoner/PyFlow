@@ -14,9 +14,16 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+      QT_QPA_PLATFORM: offscreen
 
     steps:
       - uses: actions/checkout@v4
+      - name: Install Qt runtime dependencies (Linux)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
@@ -45,6 +52,8 @@ jobs:
   package:
     needs: verify
     runs-on: ${{ matrix.os }}
+    env:
+      PYTHONPATH: ${{ github.workspace }}
     strategy:
       fail-fast: false
       matrix:
@@ -52,6 +61,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Install Qt runtime dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
