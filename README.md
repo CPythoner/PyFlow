@@ -46,6 +46,12 @@ pip install -r requirements.txt
 python pyflow.py
 ```
 
+也可以使用仓库内脚本，脚本会按当前系统自动选择参数：
+
+```bash
+python scripts/run.py
+```
+
 ## 使用说明
 
 1. 启动应用后，左侧选择或创建一个 Flow。
@@ -68,6 +74,18 @@ python pyflow.py
 `node_templates.json` 中的模板会出现在“添加节点”对话框中，适合封装常用脚本片段。
 
 ## 打包与发布
+
+本地打包也可以直接使用脚本，脚本会根据系统自动处理 `PyInstaller` 的 `--add-data` 分隔符差异：
+
+```bash
+python scripts/package.py
+```
+
+打包前请先安装：
+
+```bash
+python -m pip install pyinstaller -r requirements.txt
+```
 
 仓库内 GitHub Actions 已包含：
 
