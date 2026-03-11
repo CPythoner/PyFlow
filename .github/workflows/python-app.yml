@@ -31,7 +31,15 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with pytest
         run: |
+          set +e
           pytest
+          exit_code=$?
+          set -e
+          if [ $exit_code -eq 5 ]; then
+            echo "No tests were collected; continuing."
+            exit 0
+          fi
+          exit $exit_code
 
   package:
     needs: verify
