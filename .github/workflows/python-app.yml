@@ -71,30 +71,17 @@ jobs:
           pip install pyinstaller
           if (Test-Path requirements.txt) { pip install -r requirements.txt }
 
-      - name: Build executable (Linux/macOS)
-        if: runner.os != 'Windows'
-        run: |
-          pyinstaller --noconfirm --onefile --name pyflow \
-            --add-data "node_templates.json:." \
-            --add-data "flow_config.json:." \
-            pyflow.py
-
-      - name: Build executable (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          pyinstaller --noconfirm --onefile --name pyflow `
-            --add-data "node_templates.json;." `
-            --add-data "flow_config.json;." `
-            pyflow.py
+      - name: Build executable
+        run: python scripts/package.py
 
       - name: Upload executable artifact
         uses: actions/upload-artifact@v4
         with:
           name: pyflow-${{ runner.os }}
           path: |
-            dist/pyflow
-            dist/pyflow.exe
+            dist/pyflow-linux
+            dist/pyflow-darwin
+            dist/pyflow-windows.exe
           if-no-files-found: error
 
   release:
@@ -114,9 +101,9 @@ jobs:
       - name: Prepare release files
         run: |
           mkdir -p release-upload
-          cp release-assets/pyflow-Linux/pyflow release-upload/pyflow-linux-amd64
-          cp release-assets/pyflow-Windows/pyflow.exe release-upload/pyflow-windows-amd64.exe
-          cp release-assets/pyflow-macOS/pyflow release-upload/pyflow-macos-amd64
+          cp release-assets/pyflow-Linux/pyflow-linux release-upload/pyflow-linux-amd64
+          cp release-assets/pyflow-Windows/pyflow-windows.exe release-upload/pyflow-windows-amd64.exe
+          cp release-assets/pyflow-macOS/pyflow-darwin release-upload/pyflow-macos-amd64
 
       - name: Publish release
         uses: softprops/action-gh-release@v2
