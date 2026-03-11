@@ -3,6 +3,7 @@ name: Python application
 on:
   push:
     branches: ["main"]
+    tags: ["*"]
   pull_request:
     branches: ["main"]
   workflow_dispatch:
@@ -95,3 +96,32 @@ jobs:
             dist/pyflow
             dist/pyflow.exe
           if-no-files-found: error
+
+  release:
+    needs: package
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download packaged artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pyflow-*
+          path: release-assets
+
+      - name: Prepare release files
+        run: |
+          mkdir -p release-upload
+          cp release-assets/pyflow-Linux/pyflow release-upload/pyflow-linux-amd64
+          cp release-assets/pyflow-Windows/pyflow.exe release-upload/pyflow-windows-amd64.exe
+          cp release-assets/pyflow-macOS/pyflow release-upload/pyflow-macos-amd64
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release-upload/pyflow-linux-amd64
+            release-upload/pyflow-windows-amd64.exe
+            release-upload/pyflow-macos-amd64
